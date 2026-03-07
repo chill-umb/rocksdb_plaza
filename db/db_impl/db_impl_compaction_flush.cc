@@ -4087,7 +4087,6 @@ Status DBImpl::BackgroundCompaction(bool* made_progress,
         const std::string filename =
         TableFileName(c->immutable_options().cf_paths,
         f->fd.GetNumber(), f->fd.GetPathId());
-        // immutable_db_options().fs->MoveFileToNewLevel(filename, c->output_level());
         env_->GetFileSystem()->MoveFileToNewLevel(filename, c->output_level());
 
         c->edit()->DeleteFile(c->level(l), f->fd.GetNumber());
@@ -4213,8 +4212,8 @@ Status DBImpl::BackgroundCompaction(bool* made_progress,
     //     const std::string filename =
     //     TableFileName(c->immutable_options().cf_paths,
     //     f->fd.GetNumber(), f->fd.GetPathId());
-    //     // immutable_db_options().fs->MoveFileToNewLevel(filename, c->output_level());
-    //     env_->GetFileSystem()->MoveFileToNewLevel(filename, -1);
+    //     if (f->being_compacted)
+    //       env_->GetFileSystem()->MoveFileToNewLevel(filename, -1);
     //   }
     // }
 

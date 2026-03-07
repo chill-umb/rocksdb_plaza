@@ -315,6 +315,7 @@ Status BuildTable(
         file_writer->writable_file()->UpdateInternalKeysRange(kv.first.Encode(), tombstone_end.Encode(), tombstone.seq_,
                                                               &(tboptions.internal_comparator));
         file_writer->writable_file()->UpdateMetadata(meta->num_entries, meta->num_deletions, meta->num_range_deletions, meta->fd.file_size, meta->compensated_range_deletion_size);
+        file_writer->writable_file()->UpdateMetadata(builder->GetTableProperties());
       }
     }
 
@@ -390,6 +391,7 @@ Status BuildTable(
       auto vstorage = versions->GetColumnFamilySet()->GetDefault()->current()->storage_info();
       uint64_t average_value_size = vstorage->GetAverageValueSize();
       file_writer->writable_file()->UpdateMetadata(meta->num_entries, meta->num_deletions, meta->num_range_deletions, meta->fd.file_size, meta->compensated_range_deletion_size, average_value_size);
+      file_writer->writable_file()->UpdateMetadata(builder->GetTableProperties());
     }
     delete builder;
 

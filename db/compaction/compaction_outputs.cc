@@ -54,6 +54,7 @@ Status CompactionOutputs::Finish(
         
     uint64_t average_value_size = compaction_->input_version()->storage_info()->GetAverageValueSize();
     file_writer_->writable_file()->UpdateMetadata(meta->num_entries, meta->num_deletions, meta->num_range_deletions, meta->fd.file_size, meta->compensated_range_deletion_size, average_value_size);
+    file_writer_->writable_file()->UpdateMetadata(builder_->GetTableProperties());
   }
   current_output().finished = true;
   stats_.bytes_written += current_bytes;
@@ -762,6 +763,7 @@ Status CompactionOutputs::AddRangeDels(
       }
     }
     file_writer_->writable_file()->UpdateMetadata(meta.num_entries, meta.num_deletions, meta.num_range_deletions, meta.fd.file_size, meta.compensated_range_deletion_size);
+    file_writer_->writable_file()->UpdateMetadata(builder_->GetTableProperties());
   }
   return Status::OK();
 }
